@@ -1,0 +1,16 @@
+LD 27: 10 Seconds
+
+Platform game, each level is 10 seconds long
+10 seconds to get from point A to point B
+
+3 hearts 
+
+Move Faster
+Jump Higher
+Quicken Fall
++1 Heart
+
+
+-Buy something from store - cha ching
+-State Complete - Woooaahhhhh
+-
