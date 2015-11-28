@@ -11,7 +11,7 @@ public class Texture {
 	private BufferedImage player_sheet = null;
 	
 	public BufferedImage[] block = new BufferedImage[2];
-	public BufferedImage[] player = new BufferedImage[1];
+	public BufferedImage[] player = new BufferedImage[7];
 	
 	public Texture()	{
 		
@@ -33,7 +33,10 @@ public class Texture {
 		block[0] = bs.grabImage(1, 1, 32, 32); //dirt block
 		block[1] = bs.grabImage(2, 1, 32, 32); //grass
 		
-		player[0] = ps.grabImage(1, 1, 32, 64);
+		for(int i = 0; i < 7; i++)	{
+			player[i] = ps.grabImage(i+1, 1, 32, 64);
+		}
+		
 	}
 	
 }

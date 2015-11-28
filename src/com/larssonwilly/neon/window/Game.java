@@ -20,8 +20,8 @@ public class Game extends Canvas implements Runnable	{
 	private static final long serialVersionUID = 1L;
 	public static int HEIGHT, WIDTH;
 
-	private BufferedImage level = null;
-			
+	private BufferedImage level = null, bg = null;
+	
 	private Thread thread;
 	private boolean running = false;
 	
@@ -49,10 +49,10 @@ public class Game extends Canvas implements Runnable	{
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/level.png"); //load level
+		bg = loader.loadImage("/background.png");
+		
 		loadImageLevel(level);
-		
-		
-		
+
 		cam = new Camera(0, 0);
 		
 		/*handler.addObjects(41, ObjectId.Block, 0, Game.HEIGHT - 32, true);
@@ -123,6 +123,8 @@ public class Game extends Canvas implements Runnable	{
 
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
 		
 		g2d.translate(cam.getX(), cam.getY());//begin of cam
 		

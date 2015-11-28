@@ -2,13 +2,13 @@ package com.larssonwilly.neon.objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import com.larssonwilly.neon.framework.GameObject;
 import com.larssonwilly.neon.framework.ObjectId;
 import com.larssonwilly.neon.framework.Texture;
+import com.larssonwilly.neon.window.Animation;
 import com.larssonwilly.neon.window.Game;
 import com.larssonwilly.neon.window.Handler;
 
@@ -22,9 +22,13 @@ public class Player extends GameObject {
 	
 	Texture tex = Game.getInstance();
 	
+	private Animation playerWalk;
+	
 	public Player(float x, float y, ObjectId id, Handler handler) {
 		super(x, y, id);
 		this.handler = handler;
+		
+		playerWalk = new Animation(10, tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6]);
 		
 		// TODO Auto-generated constructor stub
 	}
@@ -41,6 +45,8 @@ public class Player extends GameObject {
 		}
 		
 		collision(object);
+		
+		playerWalk.runAnimation();
 		
 	}
 
@@ -84,7 +90,10 @@ public class Player extends GameObject {
 	public void render(Graphics g) {
 
 		g.setColor(Color.blue);
-		g.drawImage(tex.player[0], (int) x, (int) y, 48, 96, null);
+		if(velX != 0)
+			playerWalk.drawAnimation(g, (int)x, (int)y, 48, 96);
+		else
+			g.drawImage(tex.player[0], (int)x, (int)y, 48, 96, null);
 
 	}
 
