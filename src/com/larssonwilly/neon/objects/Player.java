@@ -16,19 +16,21 @@ import com.larssonwilly.neon.window.Handler;
 public class Player extends GameObject {
 
 	private float width = 48, height = 96;
+	private int facing = 1; // 1 right, -1 left
 	
 	private float gravity = 0.18f;
 	private Handler handler;
 	
 	Texture tex = Game.getInstance();
 	
-	private Animation playerWalk;
+	private Animation playerWalk, playerWalkLeft;
 	
 	public Player(float x, float y, ObjectId id, Handler handler) {
 		super(x, y, id);
 		this.handler = handler;
 		
-		playerWalk = new Animation(10, tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6]);
+		playerWalk = new Animation(5, tex.player[1], tex.player[2], tex.player[3], tex.player[4], tex.player[5], tex.player[6]);
+		playerWalkLeft = new Animation(5, tex.player[8], tex.player[9], tex.player[10], tex.player[11], tex.player[12], tex.player[13]);
 		
 		// TODO Auto-generated constructor stub
 	}
@@ -37,6 +39,9 @@ public class Player extends GameObject {
 	public void tick(LinkedList<GameObject> object) {
 		x += velX;
 		y += velY;
+		
+		if(velX < 0)	facing = -1;
+		if(velX > 0)	facing = 1;
 		
 		if(falling || jumping)	{
 			velY += gravity;
@@ -47,7 +52,7 @@ public class Player extends GameObject {
 		collision(object);
 		
 		playerWalk.runAnimation();
-		
+		playerWalkLeft.runAnimation();
 	}
 
 	private void collision(LinkedList<GameObject> object)	{
@@ -90,13 +95,28 @@ public class Player extends GameObject {
 	public void render(Graphics g) {
 
 		g.setColor(Color.blue);
-		if(velX != 0)
-			playerWalk.drawAnimation(g, (int)x, (int)y, 48, 96);
-		else
-			g.drawImage(tex.player[0], (int)x, (int)y, 48, 96, null);
+		if(jumping)	{
+			if(facing == 1)
+				g.drawImage(tex.player_jump[2], (int)x, (int)y, 48, 96, null);
+			else
+				g.drawImage(tex.player_jump[3], (int)x, (int)y, 48, 96, null);
+		}	else	{
+				if(velX != 0)	{
+					if(facing == 1)
+						playerWalk.drawAnimation(g, (int)x, (int)y, 48, 96);
+					else
+						playerWalkLeft.drawAnimation(g, (int)x, (int)y, 48, 96);
+				}
+				else	{
+					if(facing == 1)
+						g.drawImage(tex.player[0], (int)x, (int)y, 48, 96, null);
+					else
+						g.drawImage(tex.player[7], (int)x, (int)y, 48, 96, null);
+					
+					
+				}
+		}
 
-		g.drawRect((int)x, (int)y, (int)width, (int)height);
-		
 	}
 
 	
