@@ -95,6 +95,8 @@ public class Player extends GameObject {
 		else
 			g.drawImage(tex.player[0], (int)x, (int)y, 48, 96, null);
 
+		g.drawRect((int)x, (int)y, (int)width, (int)height);
+		
 	}
 
 	
