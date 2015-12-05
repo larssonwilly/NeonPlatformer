@@ -8,13 +8,13 @@ import com.larssonwilly.neon.framework.*;
 public class Camera {
 
 	private float x,y;
-	public static int HEALTH = 100;
+	public static int HEALTH;
 	private int width = 300, height = 35;
-	
 	
 	public Camera(float x, float y)	{
 		this.x = x;
 		this.y = y;
+		HEALTH = 100;
 	}
 	
 	public void tick(GameObject player)	{

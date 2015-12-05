@@ -9,6 +9,7 @@ import com.larssonwilly.neon.framework.GameObject;
 import com.larssonwilly.neon.framework.ObjectId;
 import com.larssonwilly.neon.framework.Texture;
 import com.larssonwilly.neon.window.Animation;
+import com.larssonwilly.neon.window.Game.STATE;
 import com.larssonwilly.neon.window.*;
 
 
@@ -16,7 +17,6 @@ public class Player extends GameObject {
 
 	private float width = 48, height = 96;
 
-	
 	private float gravity = 0.18f;
 	private Handler handler;
 	
@@ -89,7 +89,7 @@ public class Player extends GameObject {
 				if(getBounds().intersects(tempObject.getBounds()) || getBoundsBot().intersects(tempObject.getBounds()) || getBoundsLeft().intersects(tempObject.getBounds()) || getBoundsRight().intersects(tempObject.getBounds()) )	{	
 					Camera.HEALTH--;
 					if(Camera.HEALTH == 0)	
-						System.exit(0);
+						Game.gameState = STATE.End;
 				}
 			}
 		}

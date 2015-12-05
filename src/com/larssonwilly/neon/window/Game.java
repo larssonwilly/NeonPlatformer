@@ -27,9 +27,31 @@ public class Game extends Canvas implements Runnable	{
 	Camera cam;
 	Random r = new Random();
 	static Texture tex;
+	private Menu menu;
+	
+	public enum STATE	{
+		Menu,
+		Game,
+		Help, 
+		End
+	};
+	
+	public static STATE gameState = STATE.Menu;
 	
 	public synchronized void start()	{
 		if(running)	return;
+		
+		menu = new Menu(this, handler);
+		WIDTH = getWidth();
+		HEIGHT = getHeight();
+		
+		tex = new Texture();
+		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		
+		
+		this.addMouseListener(menu);
+		cam = new Camera(0, 0);
 		
 		running = true;
 		thread = new Thread(this);
@@ -37,26 +59,13 @@ public class Game extends Canvas implements Runnable	{
 	}
 	
 	public void init()	{
-		WIDTH = getWidth();
-		HEIGHT = getHeight();
-		
-		tex = new Texture();
-		handler = new Handler();
-		
+
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/level.png"); //load level
 		bg = loader.loadImage("/background.png");
 		
 		loadImageLevel(level);
 
-		cam = new Camera(0, 0);
-		
-		/*handler.addObjects(41, ObjectId.Block, 0, Game.HEIGHT - 32, true);
-		handler.addObjects(10, ObjectId.Block, Game.WIDTH/3, Game.HEIGHT - 200, true);
-		handler.addObjects(35, ObjectId.Block, 0, 0, false);
-		handler.addObject(new Player(200, 100, ObjectId.Player, handler));
-		*/
-		this.addKeyListener(new KeyInput(handler));
 		setFocusable(true);
 		requestFocus();
 		
@@ -64,7 +73,8 @@ public class Game extends Canvas implements Runnable	{
 	
 	@Override
 	public void run() {
-		init();
+		
+		//init();
 		this.requestFocus();
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
@@ -96,12 +106,20 @@ public class Game extends Canvas implements Runnable	{
 	}
 	
 	public void tick()	{
-		handler.tick();
 		
-		for(int i = 0; i < handler.object.size(); i++)	{
-			if(handler.object.get(i).getId() == ObjectId.Player)	{
-				cam.tick(handler.object.get(i));
+		if(gameState == STATE.Game)	{
+			handler.tick();
+		
+			for(int i = 0; i < handler.object.size(); i++)	{
+				if(handler.object.get(i).getId() == ObjectId.Player)	
+					cam.tick(handler.object.get(i));
+				
 			}
+		} else if(gameState == STATE.Menu)	{
+			menu.tick();
+		} else if(gameState == STATE.End)	{
+			handler.object.clear();
+			Camera.HEALTH = 100;
 		}
 		
 	}
@@ -117,19 +135,21 @@ public class Game extends Canvas implements Runnable	{
 		Graphics2D g2d = (Graphics2D)	g; // for camera
 		/////////////////////////////////////
 
-		g.setColor(Color.black);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		
 		g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+
+		if(gameState == STATE.Game)	{
+			g2d.translate(cam.getX(), cam.getY());//begin of cam
+
+			handler.render(g);
+			cam.render(g);
+			
+			g2d.translate(-cam.getX(), -cam.getY());//end of cam
+			
+			///////////////////////////////////////
+		}else if(gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End)	{
+			menu.render(g);
+		}
 		
-		g2d.translate(cam.getX(), cam.getY());//begin of cam
-		
-		handler.render(g);
-		cam.render(g);
-		
-		g2d.translate(-cam.getX(), -cam.getY());//end of cam
-		
-		///////////////////////////////////////
 		g.dispose();
 		bs.show();
 		
@@ -142,7 +162,7 @@ public class Game extends Canvas implements Runnable	{
 		return var;
 	}
 	
-	private void loadImageLevel(BufferedImage image)	{
+	public void loadImageLevel(BufferedImage image)	{
 		int h = image.getHeight();
 		int w = image.getWidth();
 		int red, green, blue;
@@ -167,6 +187,7 @@ public class Game extends Canvas implements Runnable	{
 			}
 			
 		}
+		
 	}
 	
 	public static Texture getInstance()	{
