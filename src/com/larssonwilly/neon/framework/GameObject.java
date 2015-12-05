@@ -12,6 +12,7 @@ public abstract class GameObject {
 	protected float velX = 0, velY = 0;
 	protected boolean falling = true;
 	protected boolean jumping = false;
+	protected int facing = 1; // 1 right, -1 left
 
 	public GameObject(float x, float y, ObjectId id)	{
 		this.x = x;

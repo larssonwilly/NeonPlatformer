@@ -9,14 +9,13 @@ import com.larssonwilly.neon.framework.GameObject;
 import com.larssonwilly.neon.framework.ObjectId;
 import com.larssonwilly.neon.framework.Texture;
 import com.larssonwilly.neon.window.Animation;
-import com.larssonwilly.neon.window.Game;
-import com.larssonwilly.neon.window.Handler;
+import com.larssonwilly.neon.window.*;
 
 
 public class Player extends GameObject {
 
 	private float width = 48, height = 96;
-	private int facing = 1; // 1 right, -1 left
+
 	
 	private float gravity = 0.18f;
 	private Handler handler;
@@ -84,9 +83,14 @@ public class Player extends GameObject {
 					x = tempObject.getX() + width - 14;
 					velX = 0;
 				}
-				
-				
-				
+
+			}
+			if(tempObject.getId() == ObjectId.Enemy){
+				if(getBounds().intersects(tempObject.getBounds()) || getBoundsBot().intersects(tempObject.getBounds()) || getBoundsLeft().intersects(tempObject.getBounds()) || getBoundsRight().intersects(tempObject.getBounds()) )	{	
+					Camera.HEALTH--;
+					if(Camera.HEALTH == 0)	
+						System.exit(0);
+				}
 			}
 		}
 	}
@@ -118,7 +122,6 @@ public class Player extends GameObject {
 		}
 
 	}
-
 	
 	public Rectangle getBoundsBot() {
 		// TODO Auto-generated method stub
@@ -138,4 +141,6 @@ public class Player extends GameObject {
 		return new Rectangle((int)x, (int)y + 5, (int) 5, (int) height - 10);
 	}
 
+
+	
 }

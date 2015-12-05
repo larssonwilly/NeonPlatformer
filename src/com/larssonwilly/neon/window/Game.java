@@ -11,9 +11,7 @@ import java.util.Random;
 import com.larssonwilly.neon.framework.KeyInput;
 import com.larssonwilly.neon.framework.ObjectId;
 import com.larssonwilly.neon.framework.Texture;
-import com.larssonwilly.neon.objects.Block;
-import com.larssonwilly.neon.objects.Player;
-
+import com.larssonwilly.neon.objects.*;
 
 public class Game extends Canvas implements Runnable	{
 
@@ -33,7 +31,6 @@ public class Game extends Canvas implements Runnable	{
 	public synchronized void start()	{
 		if(running)	return;
 		
-		
 		running = true;
 		thread = new Thread(this);
 		thread.start();
@@ -44,7 +41,6 @@ public class Game extends Canvas implements Runnable	{
 		HEIGHT = getHeight();
 		
 		tex = new Texture();
-		
 		handler = new Handler();
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -129,6 +125,7 @@ public class Game extends Canvas implements Runnable	{
 		g2d.translate(cam.getX(), cam.getY());//begin of cam
 		
 		handler.render(g);
+		cam.render(g);
 		
 		g2d.translate(-cam.getX(), -cam.getY());//end of cam
 		
@@ -164,6 +161,9 @@ public class Game extends Canvas implements Runnable	{
 				if(red == 0 && green == 0 && blue == 255)	{
 					handler.addObject(new Player(xx*32, yy*32, ObjectId.Player, handler));
 				}
+				if(red == 237 && green == 28 && blue == 36)	{
+					handler.addObject(new Enemy(xx*32, yy*32, ObjectId.Enemy, handler));
+				}
 			}
 			
 		}
@@ -179,27 +179,3 @@ public class Game extends Canvas implements Runnable	{
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

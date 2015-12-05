@@ -2,6 +2,7 @@ package com.larssonwilly.neon.framework;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import com.larssonwilly.neon.objects.*;
 
 import com.larssonwilly.neon.window.Handler;
 
@@ -30,6 +31,11 @@ public class KeyInput extends KeyAdapter	{
 					tempObject.setVelY(-8);
 
 				}
+				if(key == KeyEvent.VK_P)	{
+					
+					handler.addObject(new Bullet(tempObject.getX() + 30, tempObject.getY()+20, ObjectId.Bullet, handler, tempObject.facing));
+					
+				}
 			}
 			
 		}
@@ -46,7 +52,7 @@ public class KeyInput extends KeyAdapter	{
 		for(int i = 0; i < handler.object.size(); i++)	{
 			
 			GameObject tempObject = handler.object.get(i);
-
+			
 			if(tempObject.getId() == ObjectId.Player)	{
 				
 				if(key == KeyEvent.VK_D) keyDown[0] = false; 
