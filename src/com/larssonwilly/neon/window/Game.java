@@ -64,7 +64,7 @@ public class Game extends Canvas implements Runnable	{
 		level = loader.loadImage("/level.png"); //load level
 		bg = loader.loadImage("/background.png");
 		
-		loadImageLevel(level);
+		loadImageLevel(level, 0, 0);
 
 		setFocusable(true);
 		requestFocus();
@@ -162,7 +162,7 @@ public class Game extends Canvas implements Runnable	{
 		return var;
 	}
 	
-	public void loadImageLevel(BufferedImage image)	{
+	public void loadImageLevel(BufferedImage image, int x, int y)	{
 		int h = image.getHeight();
 		int w = image.getWidth();
 		int red, green, blue;
@@ -183,6 +183,9 @@ public class Game extends Canvas implements Runnable	{
 				}
 				if(red == 237 && green == 28 && blue == 36)	{
 					handler.addObject(new Enemy(xx*32, yy*32, ObjectId.Enemy, handler));
+				}
+				if(red == 255 && green == 255 && blue == 0)	{
+					handler.addObject(new Flag(xx*32, yy*32, ObjectId.Flag));
 				}
 			}
 			

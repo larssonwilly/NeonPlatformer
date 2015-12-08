@@ -92,6 +92,12 @@ public class Player extends GameObject {
 						Game.gameState = STATE.End;
 				}
 			}
+			if(tempObject.getId() == ObjectId.Flag){
+				if(getBounds().intersects(tempObject.getBounds()) || getBoundsBot().intersects(tempObject.getBounds()) || getBoundsLeft().intersects(tempObject.getBounds()) || getBoundsRight().intersects(tempObject.getBounds()) )	{	
+					Camera.HEALTH = 100;
+					
+				}
+			}
 		}
 	}
 	
